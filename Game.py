@@ -1,5 +1,6 @@
 import pygame as pg
 from sys import exit
+import Bird 
 
 pg.init()
 
@@ -29,5 +30,8 @@ while True:
     x2 -= 1
     if x2 < -10:
         x1 = x2+400
+    bird=pg.sprite.GroupSingle()
+    bird.add(Bird.birdClass())
+    bird.draw(screen)
     pg.display.update()
     clock.tick(60)
