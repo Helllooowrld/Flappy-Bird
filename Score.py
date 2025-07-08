@@ -2,7 +2,6 @@ import pygame as pg
 from sys import exit
 
 
-
 class scoreClass(pg.sprite.Sprite):
     def __init__(self,len):
         super().__init__()
@@ -21,15 +20,10 @@ class scoreClass(pg.sprite.Sprite):
         self.x=0
         self.rect=self.image.get_rect(midtop=(175-26*len,0))
 
-    
-    
     def update(self,score):
         self.image=self.scoreList[score]
-   
-      
-        
-        
-       
-      
+    
+    
 
 
+        
