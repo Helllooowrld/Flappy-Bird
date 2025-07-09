@@ -4,6 +4,9 @@ import Bird
 import Pipes
 import Score
 
+
+
+
 pg.init() 
 start=True
 restart=True
@@ -13,13 +16,22 @@ White=(255,255,255)
 Black=(0,0,0)
 screen = pg.display.set_mode( (350, 700))
 clock = pg.time.Clock()
-sky = pg.image.load('C:/Users/DELL/Desktop/New folder/Flappy-Bird/sprites/background-day.png')
-ground = pg.image.load('C:/Users/DELL/Desktop/New folder/Flappy-Bird/sprites/base.png')
-home_screen_img=pg.image.load('C:/Users/DELL/Desktop/New folder/Flappy-Bird//sprites/message.png')
+sky = pg.image.load('./sprites/background-day.png')
+ground = pg.image.load('./sprites/base.png')
+home_screen_img=pg.image.load('./sprites/message.png')
 home_screen_rect=home_screen_img.get_rect(center=(175,350))
 transformedSky = pg.transform.scale(sky, (400, 711.11))
 transformedGround = pg.transform.scale(ground, (400, 133.33))
-gameOver=pg.image.load('C:/Users/DELL/Desktop/New folder/Flappy-Bird/sprites/gameover.png')
+gameOver=pg.image.load('./sprites/gameover.png')
+
+
+#for Sounds
+flap_sound = pg.mixer.Sound("audio/wing.wav")
+hit_sound = pg.mixer.Sound("audio/hit.wav")
+point_sound = pg.mixer.Sound("audio/point.wav")
+point_sound.set_volume(0.5)
+
+
 
 bird = pg.sprite.GroupSingle()
 bird.add(Bird.birdClass())
@@ -40,6 +52,7 @@ def home_screen():
             if event.type==pg.KEYDOWN :
                     print('key press')
                     if event.key == pg.K_SPACE:
+                        flap_sound.play()
                         start=False
         pg.display.update()
                         
@@ -81,6 +94,7 @@ def collision():
     global highest_score
     
     if pg.sprite.spritecollide(bird.sprite, pipe, True):
+        hit_sound.play()
         if score>highest_score:
             highest_score=score
         global restart 
@@ -100,6 +114,7 @@ def collision():
         while True:
             for event in pg.event.get():
                 if event.type==pg.KEYDOWN :
+                     
                     print('key press')
                     if event.key == pg.K_RETURN:
                         reset_game()
@@ -113,9 +128,13 @@ def collision():
 while restart:
     score_group.empty()
     for event in pg.event.get():
-        if event.type == pg.QUIT:
-            pg.quit()
-            exit()
+     if event.type == pg.QUIT:
+        pg.quit()
+        exit()
+
+    if event.type == pg.KEYDOWN:
+        if event.key == pg.K_SPACE and not start:
+            flap_sound.play()
 
         
     screen.blit(transformedSky, (x1, 0))
@@ -164,11 +183,15 @@ while restart:
         if pipePassed and i.rect.right < bird.sprites()[0].rect.left:
             pipePassed = False
             score += 1
+            point_sound.play()
 
-       
+
     
 
     score_group.draw(screen)
     pg.display.update()
+
+
+    
    
     clock.tick(60)
