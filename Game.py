@@ -40,7 +40,7 @@ pipePassed = False
 score = 0
 score_group = pg.sprite.Group()
 
-# High Score Handling
+
 def load_high_score():
     if os.path.exists("high_score.txt"):
         with open("high_score.txt", "r") as f:
@@ -56,8 +56,7 @@ def save_high_score(score):
 
 highest_score = load_high_score()
 
-# Font for displaying score text
-font_score = pg.font.SysFont("Arial", 24)
+font_score = pg.font.Font("./fonts/Pixelify_Sans/PixelifySans-VariableFont_wght.ttf", 18)
 
 def home_screen():
     global start
@@ -102,7 +101,7 @@ def reset_game():
 def collision():
     global highest_score
 
-    # Update high score if beaten BEFORE showing game over screen
+   
     if score > highest_score:
         highest_score = score
         save_high_score(highest_score)
@@ -114,8 +113,8 @@ def collision():
 
         screen.fill(Black)
 
-        font_reset = pg.font.SysFont(
-            "./fonts/Pixelify_Sans/PixelifySans-VariableFont_wght.ttf", 30
+        font_reset = pg.font.Font(
+            "./fonts/Pixelify_Sans/PixelifySans-VariableFont_wght.ttf", 25
         )
 
         # Your Score text
@@ -123,7 +122,7 @@ def collision():
         your_score_rect = your_score_text.get_rect(center=(180, 220))
 
         # High Score text
-        high_score_text = font_reset.render(f"High Score: {highest_score}", True, White)
+        high_score_text = font_reset.render(f"High Score: {highest_score}", False, White)
         high_score_rect = high_score_text.get_rect(center=(180, 260))
 
         text_surface_reset = font_reset.render("Press Enter To RESTART", False, White)
@@ -206,11 +205,11 @@ while restart:
             score += 1
             point_sound.play()
 
-    # DRAW text-based High Score and Current Score
+    
     high_text = font_score.render(f"High Score: {highest_score}", True, White)
     current_text = font_score.render(f"Score: {score}", True, White)
-    screen.blit(high_text, (10, 10))          # Top-left corner
-    screen.blit(current_text, (210, 10))      # Top-right corner
+    screen.blit(high_text, (10, 10))          
+    screen.blit(current_text, (260, 10))   
 
     score_group.draw(screen)
     pg.display.update()
